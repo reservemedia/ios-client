@@ -32,6 +32,7 @@
 //                                  @(kHTTPStatusCodeNotImplemented)];
     self.flagRetryStatusCodes = @[];    //Temporarily, leave these codes empty to disable the REPORT fallback using GET capability
     self.useReport = NO;
+    self.allUserAttributesPrivate = NO;
 
     return self;
 }
@@ -62,7 +63,7 @@
 }
 
 - (void)setCapacity:(NSNumber *)capacity {
-    if (capacity) {
+    if (capacity != nil) {
         DEBUG_LOG(@"Set LDConfig capacity: %@", capacity);
         _capacity = capacity;
     } else {
@@ -72,7 +73,7 @@
 }
 
 - (void)setConnectionTimeout:(NSNumber *)connectionTimeout {
-    if (connectionTimeout) {
+    if (connectionTimeout != nil) {
         DEBUG_LOG(@"Set LDConfig timeout: %@", connectionTimeout);
         _connectionTimeout = connectionTimeout;
     } else {
@@ -82,7 +83,7 @@
 }
 
 - (void)setFlushInterval:(NSNumber *)flushInterval {
-    if (flushInterval) {
+    if (flushInterval != nil) {
         DEBUG_LOG(@"Set LDConfig flush interval: %@", flushInterval);
         _flushInterval = flushInterval;
     } else {
@@ -92,7 +93,7 @@
 }
 
 - (void)setPollingInterval:(NSNumber *)pollingInterval {
-    if (pollingInterval) {
+    if (pollingInterval != nil) {
         DEBUG_LOG(@"Set LDConfig polling interval: %@", pollingInterval);
         _pollingInterval = [NSNumber numberWithInt:MAX(pollingInterval.intValue, kMinimumPollingInterval)];
     } else {
@@ -102,7 +103,7 @@
 }
 
 - (void)setBackgroundFetchInterval:(NSNumber *)backgroundFetchInterval {
-    if (backgroundFetchInterval) {
+    if (backgroundFetchInterval != nil) {
         DEBUG_LOG(@"Set LDConfig background fetch interval: %@", backgroundFetchInterval);
         _backgroundFetchInterval = backgroundFetchInterval;
     } else {
@@ -114,6 +115,11 @@
 - (void)setStreaming:(BOOL)streaming {
     _streaming = streaming;
     DEBUG_LOG(@"Set LDConfig streaming enabled: %d", streaming);
+}
+
+- (void)setPrivateUserAttributes:(NSArray<NSString *>*)privateAttributes {
+    _privateUserAttributes = privateAttributes;
+    DEBUG_LOG(@"Set LDConfig privateAttributes set: %@", privateAttributes.description);
 }
 
 - (void)setDebugEnabled:(BOOL)debugEnabled {

@@ -70,6 +70,24 @@
 @property (nonatomic) BOOL streaming;
 
 /**
+ List of user attributes and top level custom dictionary keys to treat as private for event reporting.
+ Private attribute values will not be included in events reported to Launch Darkly, but the attribute name will still
+ be sent. All user attributes can be declared private except key, anonymous, device, & os. Access the user attribute names
+ that can be declared private through the identifiers included in LDUserModel.h. To declare all user attributes private,
+ either set privateUserAttributes to [LDUserModel allUserAttributes] or set LDConfig.allUserAttributesPrivate. In either case,
+ setting attributes to private in the config causes the LDClient to treat the attribute(s) as private for all users.
+ The default is nil.
+ */
+@property (nonatomic, strong, nullable) NSArray<NSString *>* privateUserAttributes;
+
+/**
+ Flag that tells the LDClient to treat all user attributes as private for all users. When set, ignores any values in
+ either LDConfig.privateUserAttributes or LDUserModel.privateAttributes. The LDClient will not send any private attributes
+ in event reports as described for privateUserAttributes. The default is NO.
+ */
+@property (nonatomic, assign) BOOL allUserAttributesPrivate;
+
+/**
  Flag that enables REPORT HTTP method for feature flag requests. When useReport is false,
  feature flag requests use the GET HTTP method. The default is NO.
  Do not use unless advised by LaunchDarkly.
@@ -153,7 +171,7 @@ __deprecated_msg("Use LDConfig instead")
 - (LDConfigBuilder *_Nonnull)withFlushInterval:(int)flushInterval __deprecated_msg("Use `setFlushInterval:` on an LDConfig object");
 /**
  * Set the polling interval (in seconds) for polling mode only. An interval
- * less than 60 is set to the minimum (1 minute). The default is 5 minutes. (Optional)
+ * less than 300 is set to the minimum (5 minutes). The default is 5 minutes. (Optional)
  *
  * @param pollingInterval the polling interval in seconds
  * @return the configuration builder
