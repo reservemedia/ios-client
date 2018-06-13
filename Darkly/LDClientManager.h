@@ -27,10 +27,11 @@
 
 - (void)syncWithServerForEvents;
 - (void)syncWithServerForConfig;
-- (void)processedEvents:(BOOL)success jsonEventArray:(NSArray *)jsonEventArray;
+- (void)processedEvents:(BOOL)success jsonEventArray:(NSArray*)jsonEventArray responseDate:(NSDate*)responseDate;
 - (void)processedConfig:(BOOL)success jsonConfigDictionary:(NSDictionary *)jsonConfigDictionary;
 - (void)startPolling;
 - (void)stopPolling;
+- (void)updateUser;
 - (void)willEnterBackground;
 - (void)willEnterForeground;
 - (void)flushEvents;

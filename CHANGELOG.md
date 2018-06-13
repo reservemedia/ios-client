@@ -2,12 +2,53 @@
 
 All notable changes to the LaunchDarkly iOS SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [2.13.0] - 2018-06-01
+### Added
+- To reduce the network bandwidth used for analytics events, feature request events are now sent as counters rather than individual events, and user details are now sent only at intervals rather than in each event. These behaviors can be modified through the LaunchDarkly UI and with the new configuration option `inlineUsersInEvents`. For more details, see [Analytics Data Stream Reference](https://docs.launchdarkly.com/v2.0/docs/analytics-data-stream-reference).
+- New property `inlineUserInEvents` in `LDConfig`. When `YES` includes the full user (excluding private attributes) in analytics `feature` and `custom` events. When `NO` includes only the `userKey`. Default: `NO`.
+- Calling `start` or `updateUser` (when started) on `LDClient` logs an analytics `identify` event. `identify` events contain the full user (excluding private attributes) regardless of `inlineUserInEvents`.
+- Adds analytics `summary` event used to track feature flag requests to the SDK.
+- Adds analytics `debug` event available to assist with debugging when requested from the website Debugger.
+
+### Changed
+- Changes analytics `feature` events so that they are only sent when requested via the website Dashboard.
+- Fixed a defect preventing the SDK from updating correctly on a `put` streaming event when there are no flag changes.
+- Fixed a defect on `watchOS` causing the SDK to report analytics dates incorrectly.
+
+## [2.12.1] - 2018-04-23
+### Changed
+- Clears selected warnings in CocoaPods project
+
+## [2.12.0] - 2018-04-22
+### Added
+- `LDClient` `isOnline` readonly property that reports the online/offline status.
+- `LDClient` `setOnline` method to set the online/offline status. `setOnline` may operate asynchronously, so the client calls an optional completion block when the requested operation completes.
+
+### Changed
+- Fixed potential memory leak with `DarklyEventSource`.
+
+### Removed
+- `LDClient` `online` and `offline` methods.
+
+### Fixed
+- Calling `updateUser` on `LDClient` while streaming no longer causes the SDK to request feature flags. The SDK now disconnects from the LaunchDarkly service and reconnects with the updated user.
+- Calling `updateUser` on `LDClient` while polling now resets the polling timer after making a feature flag request.
+
+## [2.11.2] - 2018-04-06
+### Changed
+- Changes the minimum required `DarklyEventSource` to version `3.2.1` in the CocoaPods podspec
+- The maximum backoff time for reconnecting to the feature stream is now 1 hour.
+
+## [2.11.1] - 2018-03-26
+### Changed
+- Changes the minimum required `DarklyEventSource` to version `3.2.0` in the CocoaPods podspec
+
 ## [2.11.0] - 2018-03-15
 ### Added
 - Support for enhanced feature streams, facilitating reduced SDK initialization times.
 
 ### Changed
-- The `streamUrl` property on `LDConfig` now expects a path-less base URI.
+- The `streamUrl` property on `LDConfig` now expects a path-less base URI. The default is now `"https://clientstream.launchdarkly.com"`. If you override the default, you may need to modify the property value.
 
 ## [2.10.1] - 2018-02-15
 ### Changed
